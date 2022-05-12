@@ -7,7 +7,7 @@ index e5062629c7..810935119e 100644
  
    // Size of the input frames should be multiple of 16 for the H/W encoder.
 -  private static final int REQUIRED_RESOLUTION_ALIGNMENT = 16;
-+  private static final int REQUIRED_RESOLUTION_ALIGNMENT = 1;
++  private static final int REQUIRED_RESOLUTION_ALIGNMENT = 2;
  
    /**
     * Keeps track of the number of output buffers that have been passed down the pipeline and not yet
