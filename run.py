@@ -10,6 +10,7 @@ import platform
 import argparse
 import collections
 import re
+import tempfile
 from typing import Optional, Dict, List
 
 
@@ -1066,6 +1067,18 @@ def main():
             get_webrtc(source_dir, patch_dir, version_info.webrtc_commit, args.target,
                        webrtc_source_dir=webrtc_source_dir,
                        fetch=args.webrtc_fetch, force=args.webrtc_fetch_force)
+
+            # Mozilla の CA 証明書を利用する
+            # https://source.chromium.org/chromium/chromium/src/+/master:third_party/webrtc/tools_webrtc/sslroots/README.md
+            with tempfile.TemporaryDirectory() as tempdir:
+                with cd(tempdir):
+                    download('https://curl.se/ca/cacert.pem')
+                    script_path = os.path.join(source_dir,
+                                               'webrtc/src/tools_webrtc/sslroots/generate_sslroots.py')
+                    cmd(['python3', script_path, 'cacert.pem'])
+
+                    ssl_roots_path = os.path.join(source_dir, 'webrtc/src/rtc_base/ssl_roots.h')
+                    cmd(['cp', '-f', 'ssl_roots.h', ssl_roots_path])
 
             # ビルド
             build_webrtc_args = {
