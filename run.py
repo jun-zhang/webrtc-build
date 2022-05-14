@@ -1078,7 +1078,7 @@ def main():
                     cmd(['python3', script_path, 'cacert.pem'])
 
                     ssl_roots_path = os.path.join(source_dir, 'webrtc/src/rtc_base/ssl_roots.h')
-                    cmd(['cp', '-f', 'ssl_roots.h', ssl_roots_path])
+                    os.rename('ssl_roots.h', ssl_roots_path)
 
             # ビルド
             build_webrtc_args = {
