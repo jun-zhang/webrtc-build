@@ -448,6 +448,10 @@ def gn_gen(webrtc_src_dir: str, webrtc_build_dir: str, gn_args: List[str], extra
     with cd(webrtc_src_dir):
         args = ['gn', 'gen', webrtc_build_dir, '--args=' + to_gn_args(gn_args, extra_gn_args)]
         logging.info(' '.join(args))
+
+        print('DEBUG: git status')
+        lines = cmdcap(['git', 'status'])
+        print(lines)
         return cmd(args)
 
 
@@ -1079,6 +1083,10 @@ def main():
 
                     ssl_roots_path = os.path.join(source_dir, 'webrtc/src/rtc_base/ssl_roots.h')
                     os.rename('ssl_roots.h', ssl_roots_path)
+
+                    print('DEBUG: cat')
+                    lines = cmdcap(['cat', ssl_roots_path])
+                    print(lines)
 
             # ビルド
             build_webrtc_args = {
