@@ -1079,6 +1079,15 @@ def main():
                     download('https://curl.se/ca/cacert.pem')
                     script_path = os.path.join(source_dir,
                                                'webrtc/src/tools_webrtc/sslroots/generate_sslroots.py')
+
+                    print('DEBUG: cat cacert.pem')
+                    lines = cmdcap(['cat', 'cacert.pem'])
+                    print(lines)
+
+                    print('DEBUG: cat generate_sslroots.py')
+                    lines = cmdcap(['cat', script_path])
+                    print(lines)
+
                     cmd(['python3', script_path, 'cacert.pem'])
 
                     ssl_roots_path = os.path.join(source_dir, 'webrtc/src/rtc_base/ssl_roots.h')
