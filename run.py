@@ -176,6 +176,7 @@ PATCHES = {
         'windows_add_deps.patch',
         'windows_silence_warnings.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'windows_arm64': [
         '4k.patch',
@@ -183,6 +184,7 @@ PATCHES = {
         'windows_add_deps.patch',
         'windows_silence_warnings.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'macos_x86_64': [
         'add_dep_zlib.patch',
@@ -193,6 +195,7 @@ PATCHES = {
         'macos_simulcast.patch',
         'ios_simulcast.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'macos_arm64': [
         'add_dep_zlib.patch',
@@ -203,6 +206,7 @@ PATCHES = {
         'macos_simulcast.patch',
         'ios_simulcast.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'ios': [
         'add_dep_zlib.patch',
@@ -215,6 +219,7 @@ PATCHES = {
         'ios_simulcast.patch',
         'ssl_verify_callback_with_native_handle.patch',
         'ios_bitcode.patch',
+        'sslroots.patch',
     ],
     'android': [
         'add_dep_zlib.patch',
@@ -225,6 +230,7 @@ PATCHES = {
         'android_fixsegv.patch',
         'android_simulcast.patch',
         'android_hardware_video_encoder.patch',
+        'sslroots.patch',
     ],
     'raspberry-pi-os_armv6': [
         'nacl_armv6_2.patch',
@@ -232,40 +238,47 @@ PATCHES = {
         '4k.patch',
         'add_license_dav1d.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'raspberry-pi-os_armv7': [
         'add_dep_zlib.patch',
         '4k.patch',
         'add_license_dav1d.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'raspberry-pi-os_armv8': [
         'add_dep_zlib.patch',
         '4k.patch',
         'add_license_dav1d.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'ubuntu-18.04_armv8': [
         'add_dep_zlib.patch',
         '4k.patch',
         'add_license_dav1d.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'ubuntu-20.04_armv8': [
         'add_dep_zlib.patch',
         '4k.patch',
         'add_license_dav1d.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'ubuntu-18.04_x86_64': [
         '4k.patch',
         'add_license_dav1d.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ],
     'ubuntu-20.04_x86_64': [
         '4k.patch',
         'add_license_dav1d.patch',
         'ssl_verify_callback_with_native_handle.patch',
+        'sslroots.patch',
     ]
 }
 
@@ -316,6 +329,19 @@ def get_webrtc(source_dir, patch_dir, version, target,
                 depth, dirs = PATCH_INFO.get(patch, (1, ['.']))
                 dir = os.path.join(src_dir, *dirs)
                 apply_patch(os.path.join(patch_dir, patch), dir, depth)
+
+        # Mozilla の CA 証明書を利用する
+        # https://source.chromium.org/chromium/chromium/src/+/master:third_party/webrtc/tools_webrtc/sslroots/README.md
+        with tempfile.TemporaryDirectory() as tempdir:
+            with cd(tempdir):
+                download('https://curl.se/ca/cacert.pem')
+                script_path = os.path.join(src_dir,
+                                           'tools_webrtc/sslroots/generate_sslroots.py')
+                cmd(['python3', script_path, 'cacert.pem'])
+
+                ssl_roots_path = os.path.join(src_dir, 'rtc_base/ssl_roots.h')
+                os.rename('ssl_roots.h', ssl_roots_path)
+
 
 
 def git_get_url_and_revision(dir):
@@ -1071,36 +1097,6 @@ def main():
             get_webrtc(source_dir, patch_dir, version_info.webrtc_commit, args.target,
                        webrtc_source_dir=webrtc_source_dir,
                        fetch=args.webrtc_fetch, force=args.webrtc_fetch_force)
-
-            # Mozilla の CA 証明書を利用する
-            # https://source.chromium.org/chromium/chromium/src/+/master:third_party/webrtc/tools_webrtc/sslroots/README.md
-            with tempfile.TemporaryDirectory() as tempdir:
-                with cd(tempdir):
-                    download('https://curl.se/ca/cacert.pem')
-                    script_path = os.path.join(source_dir,
-                                               'webrtc/src/tools_webrtc/sslroots/generate_sslroots.py')
-
-                    # print('DEBUG: cat cacert.pem')
-                    # lines = cmdcap(['cat', 'cacert.pem'])
-                    # print(lines)
-
-                    # print('DEBUG: cat generate_sslroots.py')
-                    # lines = cmdcap(['cat', script_path])
-                    # print(lines)
-
-                    print('DEBUG: openssl version')
-                    lines = cmdcap(['openssl', 'version'])
-                    print(lines)
-
-
-                    cmd(['python3', script_path, 'cacert.pem'])
-
-                    ssl_roots_path = os.path.join(source_dir, 'webrtc/src/rtc_base/ssl_roots.h')
-                    os.rename('ssl_roots.h', ssl_roots_path)
-
-                    # print('DEBUG: cat')
-                    # lines = cmdcap(['cat', ssl_roots_path])
-                    # print(lines)
 
             # ビルド
             build_webrtc_args = {

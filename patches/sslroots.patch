@@ -1,0 +1,13 @@
+diff --git a/tools_webrtc/sslroots/generate_sslroots.py b/tools_webrtc/sslroots/generate_sslroots.py
+index e2da02935d..f5b897556d 100644
+--- a/tools_webrtc/sslroots/generate_sslroots.py
++++ b/tools_webrtc/sslroots/generate_sslroots.py
+@@ -147,7 +147,7 @@ def _CreateCertSection(root_dir, source_file, label, options):
+   command = 'openssl x509 -in %s%s -noout -C' % (root_dir, source_file)
+   _PrintOutput(command, options)
+   output = subprocess.getstatusoutput(command)[1]
+-  renamed_output = output.replace('unsigned char XXX_',
++  renamed_output = output.replace('unsigned char the_',
+                                   'const unsigned char ' + label + '_')
+   filtered_output = ''
+   cert_block = '^const unsigned char.*?};$'
