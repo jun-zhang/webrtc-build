@@ -163,7 +163,6 @@ def get_depot_tools(source_dir, fetch=False):
 
 
 PATCH_INFO = {
-    'macos_h264_encoder.patch': (2, []),
     'macos_screen_capture.patch': (2, []),
     'macos_use_xcode_clang.patch': (1, ['build']),
     'windows_fix_optional.patch': (1, ['third_party']),
@@ -175,7 +174,6 @@ PATCHES = {
         'add_license_dav1d.patch',
         'windows_add_deps.patch',
         'windows_silence_warnings.patch',
-        'windows_fix_towupper.patch',
         'windows_fix_optional.patch',
         'ssl_verify_callback_with_native_handle.patch',
     ],
@@ -184,7 +182,6 @@ PATCHES = {
         'add_license_dav1d.patch',
         'windows_add_deps.patch',
         'windows_silence_warnings.patch',
-        'windows_fix_towupper.patch',
         'windows_fix_optional.patch',
         'ssl_verify_callback_with_native_handle.patch',
     ],
@@ -192,7 +189,6 @@ PATCHES = {
         'add_dep_zlib.patch',
         '4k.patch',
         'add_license_dav1d.patch',
-        'macos_h264_encoder.patch',
         'macos_screen_capture.patch',
         'ios_simulcast.patch',
         'ssl_verify_callback_with_native_handle.patch',
@@ -202,7 +198,6 @@ PATCHES = {
         'add_dep_zlib.patch',
         '4k.patch',
         'add_license_dav1d.patch',
-        'macos_h264_encoder.patch',
         'macos_screen_capture.patch',
         'ios_manual_audio_input.patch',
         'ios_simulcast.patch',
@@ -877,11 +872,11 @@ def package_webrtc(source_dir, build_dir, package_dir, target,
     # 圧縮
     with cd(package_dir):
         if target in ['windows_x86_64', 'windows_arm64']:
-            with zipfile.ZipFile('webrtc.zip', 'w') as f:
+            with zipfile.ZipFile(f'webrtc.{target}.zip', 'w') as f:
                 for file in enum_all_files('webrtc', '.'):
                     f.write(filename=file, arcname=file)
         else:
-            with tarfile.open('webrtc.tar.gz', 'w:gz') as f:
+            with tarfile.open(f'webrtc.{target}.tar.gz', 'w:gz') as f:
                 for file in enum_all_files('webrtc', '.'):
                     f.add(name=file, arcname=file)
 
