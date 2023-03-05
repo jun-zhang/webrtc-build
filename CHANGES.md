@@ -14,6 +14,8 @@ VERSION ファイルを上げただけの場合は変更履歴記録は不要。
 
 ## master
 
+# m110.5481.4.1
+
 - [UPDATE] deprecated になった actions/create-release と actions/upload-release の利用をやめて softprops/action-gh-release を利用する
     - @melpon
 - [UPDATE] GitHub Actions の各種バージョンを上げる
@@ -23,6 +25,8 @@ VERSION ファイルを上げただけの場合は変更履歴記録は不要。
 - [CHANGE] ubuntu-18.04_x86_64 のビルドを削除
     - @melpon
 - [CHANGE] Docker でのビルドを削除
+    - @melpon
+- [ADD] Windows の高負荷環境で録音デバイスの初期化に失敗する問題を修正するパッチ windows_fix_audio_device.patch を追加
     - @melpon
 
 ## m111.5563.0.0
