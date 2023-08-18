@@ -397,11 +397,12 @@ def init_rootfs(sysroot: str, config: MultistrapConfig, force=False):
 
 COMMON_GN_ARGS = [
     "rtc_include_tests=false",
-    "rtc_use_h264=false",
+    "rtc_use_h264=true",
     "is_component_build=false",
     'rtc_build_examples=false',
     "use_rtti=true",
     'rtc_build_tools=false',
+    'ffmpeg_branding=\"Chrome\"',
 ]
 
 WEBRTC_BUILD_TARGETS_MACOS_COMMON = [
