@@ -87,13 +87,9 @@ jobs:
       fail-fast: false
       matrix:
         name:
-          - raspberry-pi-os_armv6
-          - raspberry-pi-os_armv7
           - raspberry-pi-os_armv8
           - ubuntu-18.04_armv8
-          - ubuntu-20.04_armv8
           - ubuntu-20.04_x86_64
-          - ubuntu-22.04_x86_64
           - android
     runs-on: ${{ matrix.name == 'ubuntu-22.04_x86_64' && 'ubuntu-22.04' || 'ubuntu-20.04' }}
     steps:
@@ -158,25 +154,13 @@ jobs:
           platform: ios
       - uses: ./.github/actions/download
         with:
-          platform: raspberry-pi-os_armv6
-      - uses: ./.github/actions/download
-        with:
-          platform: raspberry-pi-os_armv7
-      - uses: ./.github/actions/download
-        with:
           platform: raspberry-pi-os_armv8
       - uses: ./.github/actions/download
         with:
           platform: ubuntu-18.04_armv8
       - uses: ./.github/actions/download
         with:
-          platform: ubuntu-20.04_armv8
-      - uses: ./.github/actions/download
-        with:
           platform: ubuntu-20.04_x86_64
-      - uses: ./.github/actions/download
-        with:
-          platform: ubuntu-22.04_x86_64
       - uses: ./.github/actions/download
         with:
           platform: android
