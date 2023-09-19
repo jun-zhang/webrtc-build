@@ -1,5 +1,6 @@
 name: build
 on:
+  workflow_dispatch:
   push:
     paths-ignore:
       - '**.md'
@@ -85,13 +86,9 @@ jobs:
       fail-fast: false
       matrix:
         name:
-          - raspberry-pi-os_armv6
-          - raspberry-pi-os_armv7
           - raspberry-pi-os_armv8
           - ubuntu-18.04_armv8
-          - ubuntu-20.04_armv8
           - ubuntu-20.04_x86_64
-          - ubuntu-22.04_x86_64
           - android
     runs-on: ${{ matrix.name == 'ubuntu-22.04_x86_64' && 'ubuntu-22.04' || 'ubuntu-20.04' }}
     steps:
@@ -157,13 +154,9 @@ jobs:
         name:
           - macos_arm64
           - ios
-          - raspberry-pi-os_armv6
-          - raspberry-pi-os_armv7
           - raspberry-pi-os_armv8
           - ubuntu-18.04_armv8
-          - ubuntu-20.04_armv8
           - ubuntu-20.04_x86_64
-          - ubuntu-22.04_x86_64
           - android
     name: Release ${{ matrix.name }}
     if: contains(github.ref, 'tags/m')
