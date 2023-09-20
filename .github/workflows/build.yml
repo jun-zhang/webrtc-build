@@ -18,6 +18,7 @@ jobs:
       matrix:
         name:
           - windows_x86_64
+          - windows_x86
           - windows_arm64
     runs-on: windows-2019
     steps:
@@ -195,6 +196,7 @@ jobs:
       matrix:
         name:
           - windows_x86_64
+          - windows_x86
           - windows_arm64
     name: Upload windows
     if: contains(github.ref, 'tags/m')
