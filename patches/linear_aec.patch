@@ -1,0 +1,13 @@
+diff --git a/api/audio/echo_canceller3_config.h b/api/audio/echo_canceller3_config.h
+index 4b1c7fbc47..45ca69fc9d 100644
+--- a/api/audio/echo_canceller3_config.h
++++ b/api/audio/echo_canceller3_config.h
+@@ -93,7 +93,7 @@ struct RTC_EXPORT EchoCanceller3Config {
+     bool enable_coarse_filter_output_usage = true;
+     bool use_linear_filter = true;
+     bool high_pass_filter_echo_reference = false;
+-    bool export_linear_aec_output = false;
++    bool export_linear_aec_output = true;
+   } filter;
+ 
+   struct Erle {
